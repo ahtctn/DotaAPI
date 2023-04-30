@@ -10,11 +10,12 @@ import UIKit
 class HeroTableViewCell: UITableViewCell {
 
     static let identifier = "TableViewCellIdentifier"
+    let viewModel = HeroViewModel()
     
     private let _imageView: UIImageView = {
         let image = UIImageView()
         image.backgroundColor = .white
-        image.image = UIImage(systemName: "person.fill")
+        image.image = UIImage(systemName: hero.image)
         image.contentMode = .scaleAspectFill
         image.layer.cornerRadius = 25
         image.clipsToBounds = true
@@ -23,7 +24,7 @@ class HeroTableViewCell: UITableViewCell {
     
     private let _label: UILabel = {
         let lbl = UILabel()
-        lbl.text = "Hero 1"
+        lbl.text = viewModel.
         lbl.font = .systemFont(ofSize: 20, weight: .regular)
         return lbl
     }()
@@ -50,5 +51,4 @@ class HeroTableViewCell: UITableViewCell {
         _imageView.frame = CGRect(x: 10, y: 10, width: 75, height: contentView.frame.size.height - 20)
         _label.frame = CGRect(x: imageSize + _imageView.frame.size.width, y: 0, width: contentView.frame.size.width, height: contentView.frame.size.height)
     }
-    
 }
