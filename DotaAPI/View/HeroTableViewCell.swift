@@ -54,6 +54,6 @@ class HeroTableViewCell: UITableViewCell {
     
     func configure(with item: HeroModel) {
         self._label.text = item.name
-        self._imageView.image = UIImage(systemName: item.image)
+        self._imageView.image = UIImage(systemName: "person.fill")
     }
 }

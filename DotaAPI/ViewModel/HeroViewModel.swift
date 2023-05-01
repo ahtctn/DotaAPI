@@ -12,15 +12,28 @@ class HeroViewModel {
     var eventHandler: ((_ event: Event) -> Void)?
     
     init() {
-        self.hero = [
-            HeroModel(name: "İnanna", image: "person.fill"),
-            HeroModel(name: "Dumuzi", image: "person.fill"),
-            HeroModel(name: "Gılgameş", image: "person.fill"),
-            HeroModel(name: "Enkidu", image: "person.fill"),
-            HeroModel(name: "Ereşkigal", image: "person.fill"),
-            HeroModel(name: "Ea", image: "person.fill"),
-            HeroModel(name: "Enki", image: "person.fill"),
-        ]
+//        self.hero = [
+//            HeroModel(name: "İnanna", image: "person.fill"),
+//            HeroModel(name: "Dumuzi", image: "person.fill"),
+//            HeroModel(name: "Gılgameş", image: "person.fill"),
+//            HeroModel(name: "Enkidu", image: "person.fill"),
+//            HeroModel(name: "Ereşkigal", image: "person.fill"),
+//            HeroModel(name: "Ea", image: "person.fill"),
+//            HeroModel(name: "Enki", image: "person.fill"),
+//        ]
+    }
+    
+    func fetchHeroes() {
+        self.eventHandler?(.loading)
+        Networking.shared.fetchHeroes { response in
+            switch response {
+            case .success(let hero):
+                self.hero = hero
+                self.eventHandler?(.dataLoaded)
+            case .failure(let error):
+                self.eventHandler?(.error(error))
+            }
+        }
     }
     
     func numberOfRows() -> Int {

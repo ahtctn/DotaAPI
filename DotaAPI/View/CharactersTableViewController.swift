@@ -21,6 +21,8 @@ class CharactersTableViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUIElements()
+        self.initViewModel()
+        self.observeEvent()
         
     }
     
@@ -82,3 +84,27 @@ extension CharactersTableViewController: UITableViewDataSource, UITableViewDeleg
     }
 }
 
+
+extension CharactersTableViewController {
+    func initViewModel() {
+        viewModel.fetchHeroes()
+    }
+    
+    func observeEvent() {
+        viewModel.eventHandler = { [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .loading:
+                print("product Loading")
+            case .stopLoading:
+                print("stop loading")
+            case .dataLoaded:
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            case .error(let error):
+                print("Error: \(error?.localizedDescription as Any)")
+            }
+        }
+    }
+}
