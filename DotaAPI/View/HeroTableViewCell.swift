@@ -15,7 +15,7 @@ class HeroTableViewCell: UITableViewCell {
     private let _imageView: UIImageView = {
         let image = UIImageView()
         image.backgroundColor = .white
-        image.image = UIImage(systemName: hero.image)
+        image.image = UIImage(systemName: "person.fill")
         image.contentMode = .scaleAspectFill
         image.layer.cornerRadius = 25
         image.clipsToBounds = true
@@ -24,7 +24,7 @@ class HeroTableViewCell: UITableViewCell {
     
     private let _label: UILabel = {
         let lbl = UILabel()
-        lbl.text = viewModel.
+        lbl.text = "Deneme yapıyorum."
         lbl.font = .systemFont(ofSize: 20, weight: .regular)
         return lbl
     }()
@@ -50,5 +50,10 @@ class HeroTableViewCell: UITableViewCell {
         
         _imageView.frame = CGRect(x: 10, y: 10, width: 75, height: contentView.frame.size.height - 20)
         _label.frame = CGRect(x: imageSize + _imageView.frame.size.width, y: 0, width: contentView.frame.size.width, height: contentView.frame.size.height)
+    }
+    
+    func configure(with item: HeroModel) {
+        self._label.text = item.name
+        self._imageView.image = UIImage(systemName: item.image)
     }
 }

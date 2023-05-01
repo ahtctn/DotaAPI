@@ -7,24 +7,21 @@
 
 import UIKit
 
-struct Deneme {
-    let name: String
-    let image: String
-}
-
 class CharactersTableViewController: UIViewController {
     
-    private let viewModel: HeroViewModel = HeroViewModel()
+    private let viewModel = HeroViewModel()
 
     let tableView: UITableView = {
         let tv = UITableView()
         tv.register(HeroTableViewCell.self, forCellReuseIdentifier: HeroTableViewCell.identifier)
+        
         return tv
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUIElements()
+        self.setUIElements()
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -33,6 +30,10 @@ class CharactersTableViewController: UIViewController {
     
     private func setUIElements() {
 
+        //MARK: DELEGATIONS
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+
         //MARK: NAVIGATION BAR
         self.title = "Heroes"
         self.navigationController?.navigationBar.prefersLargeTitles = true
@@ -40,28 +41,27 @@ class CharactersTableViewController: UIViewController {
         //MARK: SUBVIEWS
         view.addSubview(tableView)
         
-        //MARK: DELEGATIONS
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-    }
-    
-    private func configureUIElements() {
-        
+        self.tableView.translatesAutoresizingMaskIntoConstraints = false
+        self.tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
+        self.tableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        self.tableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        self.tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor).isActive = true
     }
 }
 
 extension CharactersTableViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.heroModel.count
+        return self.viewModel.numberOfRows()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        let item = self.viewModel.heroCell(at: indexPath.row)
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: HeroTableViewCell.identifier, for: indexPath) as? HeroTableViewCell  else {
             return UITableViewCell()
         }
-        
-        cell.configure(with: viewModel.heroModel[indexPath.row])
+        cell.configure(with: item)
         return cell
         
     }
