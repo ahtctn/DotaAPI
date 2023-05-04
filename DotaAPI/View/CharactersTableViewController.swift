@@ -44,11 +44,13 @@ class CharactersTableViewController: UIViewController {
         view.addSubview(tableView)
         
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
-        self.tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
-        self.tableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        self.tableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        self.tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
     }
+    
+    //MARK: TODO CELL İÇERİSİNDE ÖNCELİKLE KAHRAMANIN FOTOĞRAFI YANINDA VERTICAL STACK VIEW İÇERİSİNDE İSİM VE KAHRAMANIN DESCRIPTON'I VE YAN TARAFINDA DISCLOSURE INDICATOR OLACAK.
 }
 
 extension CharactersTableViewController: UITableViewDataSource, UITableViewDelegate {
@@ -69,17 +71,25 @@ extension CharactersTableViewController: UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        tableView.deselectRow(at: indexPath, animated: true)
-        
+        let item = self.viewModel.heroCell(at: indexPath.row)
         
         let vc = HeroDetailViewController()
+        vc.name = item.name
+        vc.image = item.image
+        vc.primaryAttirbute = item.primaryAttirbute
+        vc.roles = item.roles
+        vc.attackRange = item.attackRange
+        vc.attackRate = item.attackRate
+        vc.attackType = item.attackType
+        
         navigationController?.pushViewController(vc, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
         
     }
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+
         return 100
     }
 }
