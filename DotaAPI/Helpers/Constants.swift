@@ -11,5 +11,10 @@ enum Constants {
     enum API {
         static let url: String = "https://api.opendota.com/api/heroStats"
         static let imageURL: String = "https://api.opendota.com/apps/dota2/images/dota_react/heroes/antimage.png?"
+        static let baseURL: String = "https://api.opendota.com"
+    }
+    
+    enum Cell {
+        static let id: String = "TableViewCellIdentifier"
     }
 }

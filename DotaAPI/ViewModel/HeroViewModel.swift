@@ -11,17 +11,7 @@ class HeroViewModel {
     var hero: [HeroModel] = []
     var eventHandler: ((_ event: Event) -> Void)?
     
-    init() {
-//        self.hero = [
-//            HeroModel(name: "İnanna", image: "person.fill"),
-//            HeroModel(name: "Dumuzi", image: "person.fill"),
-//            HeroModel(name: "Gılgameş", image: "person.fill"),
-//            HeroModel(name: "Enkidu", image: "person.fill"),
-//            HeroModel(name: "Ereşkigal", image: "person.fill"),
-//            HeroModel(name: "Ea", image: "person.fill"),
-//            HeroModel(name: "Enki", image: "person.fill"),
-//        ]
-    }
+    init() { }
     
     func fetchHeroes() {
         self.eventHandler?(.loading)
@@ -45,7 +35,6 @@ class HeroViewModel {
     }
     
 }
-
 
 extension HeroViewModel {
     enum Event {

@@ -18,9 +18,9 @@ class HeroDetailViewController: UIViewController {
     var attackType: String = ""
     
     let heroImageView: UIImageView = {
-        let iv = UIImageView()
-        iv.contentMode = .scaleAspectFill
-        return iv
+        let view = UIImageView()
+        view.contentMode = .scaleAspectFill
+        return view
     }()
     
     let nameLabel: UILabel = {
@@ -33,7 +33,7 @@ class HeroDetailViewController: UIViewController {
     
     let rolesLabel: UILabel = {
        let lbl = UILabel()
-        lbl.textColor = .label
+        lbl.textColor = .secondaryLabel
         lbl.textAlignment = .center
         lbl.font = .systemFont(ofSize: 20, weight: .regular)
         return lbl
@@ -73,10 +73,23 @@ class HeroDetailViewController: UIViewController {
     
     let attackTypeLabel: UILabel = {
         let lbl = UILabel()
-        lbl.textColor = .label
+        lbl.textColor = .white
         lbl.textAlignment = .center
         lbl.font = .systemFont(ofSize: 20, weight: .regular)
         return lbl
+    }()
+    
+    let attackTypeLabelBackgroundView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 20
+        return view
+    }()
+    
+    let logoImageView: UIImageView = {
+        let image = UIImageView()
+        image.contentMode = .scaleAspectFit
+        image.image = UIImage(named: "dotaLogo")
+        return image
     }()
     
     
@@ -85,12 +98,28 @@ class HeroDetailViewController: UIViewController {
         self.setUI()
         self.injectUIElementsWithData()
         self.roles = []
-        // Do any additional setup after loading the view.
+        self.uiAdjustments()
+    }
+    
+    private func uiAdjustments() {
+        
+        let hero = self.heroImageView
+        
+        hero.dropShadow()
+        hero.layer.cornerRadius = 20
+        self.heroImageView.clipsToBounds = true
+        
+        
+        
     }
     
     private func injectUIElementsWithData() {
-        self.heroImageView.image = UIImage(systemName: "book.fill")
-        self.nameLabel.text = name
+        
+        DispatchQueue.main.async {
+            self.heroImageView.setImage(with: "\(Constants.API.baseURL)\(self.image)")
+        }
+        
+        self.nameLabel.text = "\(name)- \(primaryAttirbute)"
         var allRoles: String = ""
         for role in roles {
             allRoles.append("\(role), ")
@@ -98,12 +127,19 @@ class HeroDetailViewController: UIViewController {
         self.rolesLabel.text = allRoles
         self.attackRangeLabel.text = "Range: \(attackRange)"
         self.attackRateLabel.text = "Rate: ⭐️\(attackRate)"
-        self.attackTypeLabel.text = attackType
+        
+        if attackType == "Melee" {
+            self.attackTypeLabel.text = "Attack Type: \(attackType)🤺"
+        } else if attackType == "Ranged" {
+            self.attackTypeLabel.text = "Attack Type: \(attackType)🏹"
+        }
     }
     
     private func setUI() {
         let range = Int(attackRange)
         let rate = Double(attackRate)
+        
+        //MARK: ADDING SUBVIEWS
         
         self.view.addSubview(heroImageView)
         self.view.addSubview(nameLabel)
@@ -118,10 +154,14 @@ class HeroDetailViewController: UIViewController {
         self.attackRateLabelBackgroundView.addSubview(attackRateLabel)
         
         self.view.addSubview(attackTypeLabel)
+        self.view.addSubview(attackTypeLabelBackgroundView)
+        self.attackTypeLabelBackgroundView.addSubview(attackTypeLabel)
+        
+        self.view.addSubview(logoImageView)
         
         self.view.backgroundColor = .systemBackground
-        heroImageView.backgroundColor = .white
         
+        //MARK: SCALING
         
         heroImageView.translatesAutoresizingMaskIntoConstraints = false
         heroImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
@@ -135,14 +175,12 @@ class HeroDetailViewController: UIViewController {
         nameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         rolesLabel.translatesAutoresizingMaskIntoConstraints = false
-        rolesLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 50).isActive = true
+        rolesLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 10).isActive = true
         rolesLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        
         
         attackRangeLabel.translatesAutoresizingMaskIntoConstraints = false
         attackRangeLabel.topAnchor.constraint(equalTo: rolesLabel.bottomAnchor, constant: 50).isActive = true
         attackRangeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -80).isActive = true
-        
         
         attackRangeLabelBackgroundView.translatesAutoresizingMaskIntoConstraints = false
         attackRangeLabelBackgroundView.leadingAnchor.constraint(equalTo: attackRangeLabel.leadingAnchor, constant: -20).isActive = true
@@ -180,11 +218,44 @@ class HeroDetailViewController: UIViewController {
         attackTypeLabel.translatesAutoresizingMaskIntoConstraints = false
         attackTypeLabel.topAnchor.constraint(equalTo: attackRateLabel.bottomAnchor, constant: 50).isActive = true
         attackTypeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
+        attackTypeLabelBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        attackTypeLabelBackgroundView.leadingAnchor.constraint(equalTo: attackTypeLabel.leadingAnchor, constant: -20).isActive = true
+        attackTypeLabelBackgroundView.trailingAnchor.constraint(equalTo: attackTypeLabel.trailingAnchor, constant: 20).isActive = true
+        attackTypeLabelBackgroundView.topAnchor.constraint(equalTo: attackTypeLabel.topAnchor, constant: -20).isActive = true
+        attackTypeLabelBackgroundView.bottomAnchor.constraint(equalTo: attackTypeLabel.bottomAnchor, constant: 20).isActive = true
+        
+        if attackType == "Melee" {
+            attackTypeLabelBackgroundView.backgroundColor = .systemCyan
+        } else if attackType == "Ranged" {
+            attackTypeLabelBackgroundView.backgroundColor = .systemBlue
+        }
 
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        logoImageView.topAnchor.constraint(equalTo: attackTypeLabel.bottomAnchor, constant: 120).isActive = true
+        logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
+        logoImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 170).isActive = true
+        logoImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -170).isActive = true
+        logoImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
+    }
+}
+
+extension UIImageView {
+    func dropShadow(scale: Bool = true) {
+        layer.masksToBounds = true
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOpacity = 0.6
+        layer.shadowOffset = .zero
+        layer.shadowRadius = 1
+        layer.shouldRasterize = true
+        layer.rasterizationScale = scale ? UIScreen.main.scale : 1
     }
 }

@@ -65,6 +65,8 @@ extension CharactersTableViewController: UITableViewDataSource, UITableViewDeleg
         guard let cell = tableView.dequeueReusableCell(withIdentifier: HeroTableViewCell.identifier, for: indexPath) as? HeroTableViewCell  else {
             return UITableViewCell()
         }
+        cell.accessoryType = .disclosureIndicator
+        cell.tintColor = .systemRed
         cell.configure(with: item)
         return cell
         
@@ -81,6 +83,8 @@ extension CharactersTableViewController: UITableViewDataSource, UITableViewDeleg
         vc.attackRange = item.attackRange
         vc.attackRate = item.attackRate
         vc.attackType = item.attackType
+        vc.image = item.image
+
         
         navigationController?.pushViewController(vc, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)

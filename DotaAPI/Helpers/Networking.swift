@@ -20,9 +20,7 @@ class Networking {
     
     static let shared = Networking()
     
-    private init() {
-        
-    }
+    private init() {}
     
     func fetchHeroes(completion: @escaping Handler) {
         guard let url = URL(string: Constants.API.url) else {
@@ -65,7 +63,6 @@ class Networking {
                 print("Type mismatch")
             } catch {
                 print("error: ", error)
-                print("dümdüz error")
             }
             
         }.resume()
